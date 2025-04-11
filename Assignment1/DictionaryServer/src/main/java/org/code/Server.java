@@ -3,28 +3,43 @@ import java.net.*;
 import java.io.*;
 import java.util.Set;
 import java.util.concurrent.*;
+import java.net.InetAddress;
 
 public class Server {
 
     private static dictionary dict = new dictionary();
     public static BlockingQueue<Task> taskQueue = new LinkedBlockingQueue<>();
+    public static String path = null;
+    public static int port = 8888;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        if (args.length != 2) {
-            System.out.println("The command should be : java -jar DictionaryServer.jar <port> <dictionary-file>");
+        if(args.length == 2) {
+            port = Integer.parseInt(args[0]);
+            path = args[1];
+        }
+        else if (args.length == 1) {
+            try {
+                port = Integer.parseInt(args[0]);
+            }catch(NumberFormatException e){
+                System.out.println("The command should be : java -jar DictionaryServer.jar <port> (<dictionary-file>)");
+                System.exit(1);
+            }
+        }
+        else{
+            System.out.println("The command should be : java -jar DictionaryServer.jar <port> (<dictionary-file>)");
             System.exit(1);
         }
-
-        int port = Integer.parseInt(args[0]);
-        String path = args[1];
-
         try {
             dict.set(path);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        InetAddress localhost = InetAddress.getLocalHost();
+        System.out.println("Host address: " + localhost.getHostAddress());
+
         ServerSocket serverSocket = new ServerSocket(port);
+
 
         new Thread(new TaskProcessor()).start();
 
@@ -62,50 +77,47 @@ public class Server {
             String command = requestParts[0];
             String response = "";
             try {
-                switch(command) {
+                switch (command) {
                     case "add": {
                         String key = requestParts[1];
                         String value = requestParts[2];
-                        dict.add(key, value);
-                        response = "Dictionary Added " + key + " : " + value;
+                        response = dict.add(key, value);
                         break;
                     }
                     case "add_exist": {
                         String key = requestParts[1];
                         String value = requestParts[2];
-                        dict.add(key, value);
-                        response = "Dictionary exist word Added " + key + " : " + value;
+                        response = dict.add_exist(key, value);
                         break;
                     }
                     case "remove": {
                         String key = requestParts[1];
-                        String result = dict.remove(key);
-                        response = "Dictionary removed status: " + result;
+                        response = dict.remove(key);
                         break;
                     }
                     case "update": {
                         String key = requestParts[1];
                         String value = requestParts[2];
                         String new_value = requestParts[3];
-                        String result = dict.update(key, value, new_value);
-                        response = "Dictionary word Updated status: " + result;
+                        response = dict.update(key, value, new_value);
                         break;
                     }
                     case "query": {
                         String key = requestParts[1];
-                        Set<String> query_result = dict.query(key);
-                        response = query_result.toString();
+                        response = dict.query(key);
                         break;
                     }
                     default:
-                        response = "Invalid command!";
+                        response = "Invalid action command!";
                         break;
                 }
-            } catch(Exception e) {
-                response = "Error processing task: " + e.getMessage();
+            } catch (Exception e) {
+                response = "Error processing task: " + "Please fillout all blank textfield for your request";
             }
 
             task.out.println(response);
+            System.out.println(response);
+
         }
     }
 
@@ -128,7 +140,12 @@ public class Server {
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             } finally {
-                try { socket.close(); } catch (IOException e) {}
+                try {
+                    System.out.println("Client disconnected: " + socket.getRemoteSocketAddress());
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

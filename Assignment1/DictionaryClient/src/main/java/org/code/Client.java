@@ -1,6 +1,8 @@
 package org.code;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.*;
 
@@ -17,49 +19,53 @@ public class Client {
     private PrintWriter out;
     private BufferedReader in;
     private DefaultListModel<String> actionModel;
+    public static String address = "localhost";
+    public static int port = 8888;
 
     // Available actions
-    private static final String[] actions = {"add", "increase", "remove", "query", "update"};
+    private static final String[] actions = {"add", "add_exist", "remove", "query", "update"};
 
     public static void main(String[] args) {
-        // Check if we received server address and port
-        /*
-        if (args.length != 2) {
-            System.out.println("The command should be: java -jar DictionaryClient.jar <server-address> <server-port>");
+        if(args.length == 2) {
+            port = Integer.parseInt(args[1]);
+            address = args[0];
+        }
+        else if (args.length == 1) {
+            try {
+                port = Integer.parseInt(args[1]);
+            }catch(NumberFormatException e){
+                System.out.println("The command should be : java –jar DictionaryClient.jar <server-address> <server-port>");
+                System.exit(1);
+            }
+        }
+        else{
+            System.out.println("The command should be : java –jar DictionaryClient.jar <server-address> <server-port>");
             System.exit(1);
         }
-        */
 
-        String serverAddress = "localhost";
-        int serverPort = 8888;
-        //String serverAddress = args[0];  // Server address
-        //int serverPort = Integer.parseInt(args[1]);  // Server port
-
-        SwingUtilities.invokeLater(() -> {
-            try {
-                new Client(serverAddress, serverPort).initialize();
-            } catch (IOException e) {
-                e.printStackTrace();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new Client(address, port).initialize();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    // Constructor to initialize server address and port
     public Client(String serverAddress, int serverPort) throws IOException {
-        // Initialize socket connection to the server
         this.socket = new Socket(serverAddress, serverPort);
         this.out = new PrintWriter(socket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
-    // Initialize the GUI components
     public void initialize() {
         frame = new JFrame("Dictionary Client");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setSize(400, 500);
         frame.setLayout(new BorderLayout());
 
-        // Create the action list model and list
         actionModel = new DefaultListModel<>();
         for (String action : actions) {
             actionModel.addElement(action);
@@ -69,18 +75,15 @@ public class Client {
         actionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         actionList.addListSelectionListener(e -> updateInputFields());
 
-        // Create the input fields and buttons
         keyField = new JTextField(20);
         valueField = new JTextField(20);
         newValueField = new JTextField(20);
         submitButton = new JButton("Submit");
         submitButton.setEnabled(false);  // Initially disabled
 
-        // Create text area to display server response
         responseArea = new JTextArea(10, 30);
         responseArea.setEditable(false);
 
-        // Panel for input fields
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(5, 2));
         inputPanel.add(new JLabel("Key:"));
@@ -90,32 +93,44 @@ public class Client {
         inputPanel.add(new JLabel("New Value:"));
         inputPanel.add(newValueField);
 
-        // Panel for actions and buttons
         JPanel actionPanel = new JPanel();
         actionPanel.setLayout(new BorderLayout());
         actionPanel.add(new JScrollPane(actionList), BorderLayout.CENTER);
         actionPanel.add(submitButton, BorderLayout.SOUTH);
 
-        // Add components to the frame
         frame.add(inputPanel, BorderLayout.CENTER);
         frame.add(actionPanel, BorderLayout.WEST);
         frame.add(new JScrollPane(responseArea), BorderLayout.SOUTH);
 
-        // Submit button action
-        submitButton.addActionListener(e -> sendRequest());
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                try {
+                    if (out != null) out.close();
+                    if (in != null) in.close();
+                    if (socket != null && !socket.isClosed()) {
+                        socket.close();
+                        System.out.println("Disconnected from server.");
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } finally {
+                    frame.dispose();
+                    System.exit(0);
+                }
+            }
+        });
 
-        // Show the frame
+        submitButton.addActionListener(e -> sendRequest());
         frame.setVisible(true);
+
     }
 
-    // Update input fields based on selected action
     private void updateInputFields() {
         String selectedAction = actionList.getSelectedValue();
         keyField.setText("");
         valueField.setText("");
         newValueField.setText("");
 
-        // Disable all input fields initially
         keyField.setEnabled(false);
         valueField.setEnabled(false);
         newValueField.setEnabled(false);
@@ -123,7 +138,7 @@ public class Client {
 
         switch (selectedAction) {
             case "add":
-            case "increase":
+            case "add_exist":
                 keyField.setEnabled(true);
                 valueField.setEnabled(true);
                 submitButton.setEnabled(true);
@@ -142,43 +157,43 @@ public class Client {
         }
     }
 
-    // Send the request to the server
     private void sendRequest() {
         String selectedAction = actionList.getSelectedValue();
-        String key = keyField.getText();
-        String value = valueField.getText();
-        String newValue = newValueField.getText();
+        String key = keyField.getText().toLowerCase();
+        String value = valueField.getText().toLowerCase();
+        String newValue = newValueField.getText().toLowerCase();
 
-        // Disable the submit button until the response is received
         submitButton.setEnabled(false);
 
-        // Prepare request based on selected action
-        String request = "";
+        String request = "none";
         switch (selectedAction) {
             case "add":
-            case "increase":
-                request = selectedAction + ":" + key + ":" + value;
+            case "add_exist":
+                if(key != "" && value != "") {
+                    request = selectedAction + ":" + key + ":" + value;
+                }
                 break;
             case "remove":
             case "query":
-                request = selectedAction + ":" + key;
+                if(key != "") {
+                    request = selectedAction + ":" + key;
+                }
                 break;
             case "update":
-                request = selectedAction + ":" + key + ":" + value + ":" + newValue;
+                if(key != "" && value != "" && newValue != "") {
+                    request = selectedAction + ":" + key + ":" + value + ":" + newValue;
+                }
                 break;
         }
-
-        // Send the request to the server
         out.println(request);
-
-        // Wait for server's response and update the UI
+        request = "none";
         try {
             String response = in.readLine();
             responseArea.setText(response);
-            submitButton.setEnabled(true);  // Re-enable the submit button after response
+            submitButton.setEnabled(true);
         } catch (IOException e) {
-            responseArea.setText("Error communicating with server.");
-            submitButton.setEnabled(true);  // Re-enable the submit button if there's an error
+            responseArea.setText("Cannot communicat with the server.");
+            submitButton.setEnabled(true);
             e.printStackTrace();
         }
     }
