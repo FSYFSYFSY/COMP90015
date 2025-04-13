@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.concurrent.*;
 import java.net.InetAddress;
 
+//Hanjie Liu: 1667156
 public class Server {
 
     private static dictionary dict = new dictionary();
@@ -32,7 +33,8 @@ public class Server {
         try {
             dict.set(path);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("No such a json file in the path");
+            System.exit(1);
         }
 
         InetAddress localhost = InetAddress.getLocalHost();
@@ -112,7 +114,7 @@ public class Server {
                         break;
                 }
             } catch (Exception e) {
-                response = "Error processing task: " + "Please fillout all blank textfield for your request";
+                response = "Please fillout all blank textfield for your request";
             }
 
             task.out.println(response);

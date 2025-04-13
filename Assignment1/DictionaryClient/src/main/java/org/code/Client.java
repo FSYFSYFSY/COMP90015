@@ -6,6 +6,7 @@ import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.*;
 
+//Hanjie Liu: 1667156
 
 public class Client {
     private JFrame frame;

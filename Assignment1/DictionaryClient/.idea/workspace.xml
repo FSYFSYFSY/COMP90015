@@ -10,23 +10,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8dbbfb8-41da-44b7-b531-5e66f5eef6e1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/DictionaryClient_jar/DictionaryClient.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/DictionaryClient_jar/DictionaryClient.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/code/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/code/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/code/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/code/Client$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/code/Client$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/code/Client$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/code/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/code/Client.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DictionaryServer/out/artifacts/DictionaryServer_jar/DictionaryServer.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/out/artifacts/DictionaryServer_jar/DictionaryServer.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DictionaryServer/src/main/java/org/code/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/src/main/java/org/code/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DictionaryServer/src/main/java/org/code/dictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/src/main/java/org/code/dictionary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DictionaryServer/src/main/resources/dictionary.json" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/src/main/resources/dictionary.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DictionaryServer/target/classes/dictionary.json" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/target/classes/dictionary.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/Server$ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/Server$ClientHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/Server$Task.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/Server$Task.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/Server$TaskProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/Server$TaskProcessor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/dictionary$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/dictionary$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/dictionary.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DictionaryServer/target/classes/org/code/dictionary.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,15 +46,16 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lhg45/Desktop/COMP90015/Assignment1/DictionaryServer&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

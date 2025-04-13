@@ -19,7 +19,7 @@ public class dictionary {
             data = objectMapper.readValue(inputStream, new TypeReference<Map<String, Set<String>>>() {});
             System.out.println("Loaded dictionary from JAR resource.");
         }
-        else {
+        else{
             data = objectMapper.readValue(new File(path), new TypeReference<Map<String, Set<String>>>() {});
             System.out.println("Loaded dictionary from file: " + path);
         }
