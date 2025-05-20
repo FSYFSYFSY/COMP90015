@@ -5,6 +5,8 @@ import java.awt.*;
 public class Triangle implements Shape {
     private int x1, y1, x2, y2, x3, y3;
     private int color;
+    private final String type = "Triangle";
+    private static final long serialVersionUID = 1L;
 
     public Triangle(int x1, int y1, int x2, int y2, int color) {
         this.x1 = x1;
@@ -34,7 +36,7 @@ public class Triangle implements Shape {
         g.setColor(new Color(color));
         int[] xs = {x1, x2, x3};
         int[] ys = {y1, y2, y3};
-        g.drawPolygon(xs, ys, 3);
+        g.fillPolygon(xs, ys, 3);
     }
 
     @Override

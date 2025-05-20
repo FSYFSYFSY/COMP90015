@@ -5,6 +5,8 @@ import java.awt.*;
 public class Oval implements Shape {
     private int x, y, width, height;
     private int color;
+    private final String type = "Oval";
+    private static final long serialVersionUID = 1L;
 
     public Oval(int startX, int startY, int endX, int endY, int color) {
         this.x = Math.min(startX, endX);
@@ -17,7 +19,7 @@ public class Oval implements Shape {
     @Override
     public void draw(Graphics g) {
         g.setColor(new Color(color));
-        g.drawOval(x, y, width, height);
+        g.fillOval(x, y, width, height);
     }
 
     @Override
