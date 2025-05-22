@@ -32,13 +32,36 @@ public class FileMenuBar extends JMenuBar {
         saveItem.setEnabled(isManager);
 
         newItem.addActionListener(e -> {
-            int result = JOptionPane.showConfirmDialog(null, "Clear current canvas?", "New Drawing", JOptionPane.YES_NO_OPTION);
+            int result = JOptionPane.showConfirmDialog(
+                    null,
+                    "Do you want to save the current canvas before starting a new one?",
+                    "New Drawing",
+                    JOptionPane.YES_NO_CANCEL_OPTION
+            );
+
+            if (result == JOptionPane.CANCEL_OPTION || result == JOptionPane.CLOSED_OPTION) {
+                return;
+            }
+
             if (result == JOptionPane.YES_OPTION) {
-                try {
-                    service.clearBoard();
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
+                JFileChooser fileChooser = new JFileChooser();
+                if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
+                        List<Shape> shapes = service.getCurrentBoard();
+                        out.writeObject(shapes);
+
+                        service.saveShapesToFile(shapes);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
+            }
+
+            try {
+                service.clearBoard();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
             }
         });
 

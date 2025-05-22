@@ -53,7 +53,7 @@ public class ClientCallbackImpl extends UnicastRemoteObject implements ClientCal
     public void kicked() throws RemoteException {
         SwingUtilities.invokeLater(() -> {
             JOptionPane.showMessageDialog(null,
-                    "You were kicked out by manager",
+                    "You were kicked out by manager (or server closed)",
                     "Disconnected",
                     JOptionPane.WARNING_MESSAGE);
             System.exit(0);

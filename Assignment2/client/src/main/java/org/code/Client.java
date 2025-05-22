@@ -8,6 +8,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Client {
@@ -19,7 +20,7 @@ public class Client {
     static String hostName = "localhost";
     static String serviceName ="whiteboard";
     static int port = 1099;
-    private static String clientname = "client";
+    private static String clientname = "client1";
     public static List<String> clients = new ArrayList<>();
     public static DefaultListModel<String> clientListModel = new DefaultListModel<>();;
     private JTextArea chatArea;
@@ -71,6 +72,16 @@ public class Client {
             public void windowClosing(WindowEvent e) {
                 try {
                     service.unregisterClient(callback);
+                    if(Objects.equals(callback.getclientname(), "manager")){
+                        for (String clientName : clients) {
+                            if (!Objects.equals(clientName, "manager")) {
+                                service.kickClient(clientName);
+                            }
+                        }
+                    }
+                    else{
+                        service.broadcastMessage(clientname, clientname+" has left. ");
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 } finally {
@@ -90,6 +101,7 @@ public class Client {
 
         callback = new ClientCallbackImpl(this);
         service.registerClient(callback);
+        service.broadcastMessage(clientname, clientname+" joined! ");
 
         List<String> existingClients = service.getClientList();
         clientListModel.clear();
